@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket de Turno</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ticket.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Ticket de Turno</h1>
+        <p>Complete el formulario para generar o modificar su ticket</p>
+        <form name="forma" id="forma" action="{{ url_for('process_ticket') }}" method="post">
+            <div id="row">
+                <div class="col-25">
+                    <label for="curp">CURP:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="curp" name="curp">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="turno_numero">Número de Turno:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="turno_numero" name="turno_numero">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="nombre_completo">Nombre completo de quien realizará el trámite:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="nombre_completo" name="nombre_completo">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="nombre">Nombre:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="nombre" name="nombre">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="paterno">Paterno:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="paterno" name="paterno">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="materno">Materno:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="materno" name="materno">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="telefono">Teléfono:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="telefono" name="telefono">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="celular">Celular:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="celular" name="celular">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="correo">Correo:</label>
+                </div>
+                <div class="col-75">
+                    <input type="email" id="correo" name="correo">
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="nivel">¿Nivel al que desea ingresar o que ya cursa el alumno?</label>
+                </div>
+                <div class="col-75">
+                    <select id="nivel" name="nivel">
+                        <option value="primaria">Primaria</option>
+                        <option value="secundaria">Secundaria</option>
+                        <option value="preparatoria">Preparatoria</option>
+                        <option value="universidad">Universidad</option>
+                    </select>
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="municipio">Municipio donde desea estudie el alumno:</label>
+                </div>
+                <div class="col-75">
+                    <select id="municipio" name="municipio">
+                        <option value="municipio1">Municipio 1</option>
+                        <option value="municipio2">Municipio 2</option>
+                        <option value="municipio3">Municipio 3</option>
+                    </select>
+                </div>
+            </div>
+            <div id="row">
+                <div class="col-25">
+                    <label for="asunto">Seleccione el asunto que va a tratar:</label>
+                </div>
+                <div class="col-75">
+                    <select id="asunto" name="asunto">
+                        <option value="inscripcion">Inscripción</option>
+                        <option value="informacion">Información</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+            </div>
+            <div id="row">
+                <input type="submit" class="boton_ticket" value="Enviar">
+            </div>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/ticket.js') }}"></script>
+</body>
+</html>
