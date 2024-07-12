@@ -31,11 +31,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 socketio = SocketIO(app)
 
-from flask_sqlalchemy import SQLAlchemy
-
-# Inicialización de la extensión SQLAlchemy
-db = SQLAlchemy()
-
 # Modelo para la tabla nombre_tramite
 class NombreTramite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -92,6 +87,8 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
+
 # Rutas
 @app.route('/')
 def index():
@@ -108,7 +105,7 @@ def login():
             if user.role == 'admin':
                 return redirect(url_for('admin_dashboard'))
             elif user.role == 'cliente':
-                return redirect(url_for('ticket'))
+                return redirect(url_for('ticket_form'))
         else:
             error = 'Usuario o contraseña incorrectos'
             return render_template('login.html', error=error)
@@ -118,9 +115,59 @@ def login():
 def admin_dashboard():
     return render_template('admin_dashboard.html')
 
-@app.route('/ticket')
+@app.route('/ticket', methods=['GET', 'POST'])
 def ticket_form():
-    return render_template('ticket.html')
+    if request.method == 'POST':
+        curp = request.form['curp']
+        nombre_completo = request.form['nombre_completo']
+        nombre = request.form['nombre']
+        paterno = request.form['paterno']
+        materno = request.form['materno']
+        telefono = request.form['telefono']
+        celular = request.form['celular']
+        correo = request.form['correo']
+        nivel_id = request.form['nivel_id']
+        municipio_id = request.form['municipio_id']
+        nombre_tramite_id = request.form['nombre_tramite_id']
+
+        # Crear una instancia del ticket
+        ticket = Ticket(curp=curp, nombre_completo=nombre_completo, nombre=nombre,
+                        paterno=paterno, materno=materno, telefono=telefono, celular=celular,
+                        correo=correo, nivel_id=nivel_id, municipio_id=municipio_id,
+                        nombre_tramite_id=nombre_tramite_id)
+
+        # Agregar el ticket a la sesión y guardar en la base de datos
+        db.session.add(ticket)
+        db.session.commit()
+
+        # Redireccionar a la página de confirmación o cualquier otra página deseada
+        return redirect(url_for('process_ticket'))
+
+    # Obtener datos para las listas desplegables
+    niveles = Nivel.query.all()
+    municipios = Municipio.query.all()
+    tramites = NombreTramite.query.all()
+
+    return render_template('ticket.html', niveles=niveles, municipios=municipios, tramites=tramites)
+
+
+@app.route('/proceso')
+def process_ticket():
+    return "¡Ticket registrado correctamente!"
+
+
+
+with app.app_context():
+    db.create_all()
+    if User.query.count() == 0:
+        user = User(username='admin', role='admin')
+        user.set_password('contraseña_admin')
+        db.session.add(user)
+        db.session.commit()
+        user = User(username='cliente', role='cliente')
+        user.set_password('contraseña_cliente')
+        db.session.add(user)
+        db.session.commit()
 
 # Inicializar la aplicación
 if __name__ == '__main__':
